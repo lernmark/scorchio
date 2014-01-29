@@ -60,19 +60,12 @@
         $("dl").append(dt)
       }
       
-  		var ned = 0
-  		if (item.pcat === 1){
-  			ned="&#10052;"
-  		} else if (item.pcat === 3) {
-  			ned="&#9730;"
-  		} else {
-  			ned=""
-  		}
+
 
 
       // Now add it to the list
       var dd = $("<dd/>")
-  		dd.html("" + t + "&nbsp;&nbsp;" + getTemp(item.t+6) + "&nbsp;&nbsp;&nbsp;" + getWindDirection(item.wd) + "&nbsp;&nbsp;&nbsp;" + ned + "" + getPrecipitation(item))
+  		dd.html("" + t + "&nbsp;&nbsp;" + getTemp(item.t+6) + "&nbsp;&nbsp;&nbsp;" + getWindDirection(item.wd) + "&nbsp;&nbsp;&nbsp;" + "" + getPrecipitation(item))
 		  $("dl").append(dd)
   		prevDate = d
 	});
@@ -99,8 +92,39 @@
   }
 
   function getPrecipitation(item) {
-    var pit = item.pit
-    return pit + "&#9748;"
+
+  // Category of precipitation
+  // 0 no
+  // 1 snow
+  // 2 snow and rain
+  // 3 rain
+  // 4 drizzle
+  // 5 freezing rain
+  // 6 freezing drizzle
+
+    var cat = ""
+    if (item.pcat === 1){
+      cat="snö"
+    } else if (item.pcat === 2) {
+      cat="snöblandat"
+    } else if (item.pcat === 3) {
+      cat="regn"
+    } else if (item.pcat === 4) {
+      cat="dugg"
+    } else if (item.pcat === 5) {
+      cat="underkylt"
+    } else if (item.pcat === 6) {
+      cat="underkylt"
+    } else {
+      cat=""
+    }
+
+
+    var pit = ""
+    if (item.pit > 0) {
+      pit = item.pit
+    }
+    return "<strong>" + cat + "</strong>&nbsp;" + pit
   }
 
   function getWindDirection(n) {
