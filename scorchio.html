@@ -53,7 +53,7 @@
 
 	   $.each( data.timeseries, function( i, item ) {
   		var d = new Date(item.validTime).format("d/M")
-  		var t = new Date(item.validTime).format("hh:mm")
+  		var t = new Date(item.validTime).format("hh")
       if(d != prevDate) {
         var dt = $("<dt/>")
         dt.html("<h2>" + d + "</h2>")
@@ -65,7 +65,7 @@
 
       // Now add it to the list
       var dd = $("<dd/>")
-  		dd.html("" + t + "&nbsp;&nbsp;" + getTemp(item.t+6) + "&nbsp;&nbsp;&nbsp;" + getWindDirection(item.wd) + "&nbsp;&nbsp;&nbsp;" + "" + getPrecipitation(item))
+  		dd.html("<strong style='font-size:1.5em; line-height:10px;'>" + t + "</strong>&nbsp;" + getTemp(item.t+6) + "&nbsp;&nbsp;&nbsp;" + getWindDirection(item.wd) + "&nbsp;&nbsp;&nbsp;" + "" + getPrecipitation(item))
 		  $("dl").append(dd)
   		prevDate = d
 	});
@@ -192,7 +192,7 @@
     } else {
       dir = "N&nbsp;"
     } 
-    return "<div title='" + n + "' style=';height:1em;display:inline-block;font-size:1.5em; line-height:0.9em; margin-right:0.3em;transform:rotate(" + n + "deg);-webkit-transform:rotate(" + n + "deg)'>&darr;</div>" + dir;
+    return "<div title='" + n + "' style='color:red;height:1em;display:inline-block;font-size:1.5em; line-height:0.9em; margin-right:0.3em;transform:rotate(" + n + "deg);-webkit-transform:rotate(" + n + "deg)'>&darr;</div><span style='color:red'>" + dir + "</span>";
   }
 
 })();  
