@@ -72,7 +72,7 @@
 
       // Now add it to the list
       var dd = $("<dd/>")
-  		dd.html("" + t + "&nbsp;&nbsp;" + getTemp(item.t+6) + "&nbsp;&nbsp;&nbsp;" + getWindDirection(item.wd) + "&nbsp;&nbsp;&nbsp;" + ned + "")
+  		dd.html("" + t + "&nbsp;&nbsp;" + getTemp(item.t+6) + "&nbsp;&nbsp;&nbsp;" + getWindDirection(item.wd) + "&nbsp;&nbsp;&nbsp;" + ned + "" + getPrecipitation(item))
 		  $("dl").append(dd)
   		prevDate = d
 	});
@@ -81,17 +81,27 @@
   // Forces signing on a number, returned as a string
   function getTemp(n) {
     n = Math.round(n);
+    var t = ""
     if(n > 9){
-        return "+" + n + "&deg;";
+      t = "+" + n + "&deg;";
     } else if(n > 0){
-        return "&nbsp;+" + n + "&deg;";
+      t = "&nbsp;+" + n + "&deg;";
     } else if (n === 0) {
-      return "&nbsp;&plusmn;" + n + "&deg;";
+      t = "&nbsp;&plusmn;" + n + "&deg;";
+    } else if (n === 0) {
+      t = "&nbsp;&plusmn;" + n + "&deg;";
     }else{
-        return n.toString() + "&deg;";
+      t = "&nbsp;" + n.toString() + "&deg;";
     }
+
+    return "<div style='display:inline-block; width:2em'>" + t + "</div>"
+
   }
 
+  function getPrecipitation(item) {
+    var pit = item.pit
+    return pit + "&#9748;"
+  }
 
   function getWindDirection(n) {
     var dir = ""
