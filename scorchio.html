@@ -75,19 +75,67 @@
   function getTemp(n) {
     n = Math.round(n);
     var t = ""
-    if(n > 9){
+    var color = "lime"
+    if(n > 25){
       t = "+" + n + "&deg;";
+      color = "#f05522"
+    } else if(n > 25){
+      t = "+" + n + "&deg;";
+      color = "#e3cc68"
+    } else if(n > 9){
+      t = "+" + n + "&deg;";
+      color = "#48b548"
+    } else if(n > 7){
+      t = "&nbsp;+" + n + "&deg;";
+      color = "#2da848"
+    } else if(n > 5){
+      t = "&nbsp;+" + n + "&deg;";
+      color = "#00a85f"
+    } else if(n > 3){
+      t = "&nbsp;+" + n + "&deg;";
+      color = "#52ba84"
+    } else if(n > 1){
+      t = "&nbsp;+" + n + "&deg;";
+      color = "#6ac4ac"
     } else if(n > 0){
       t = "&nbsp;+" + n + "&deg;";
+      color = "#42b8eb"
     } else if (n === 0) {
       t = "&nbsp;&plusmn;" + n + "&deg;";
-    } else if (n === 0) {
-      t = "&nbsp;&plusmn;" + n + "&deg;";
+      color = "#6ecbdb"
+    } else if(n < -25){
+      t = "&nbsp;" + n + "&deg;";
+      color = "#ebebeb"
+    } else if(n < -20){
+      t = "&nbsp;" + n + "&deg;";
+      color = "#828282"
+    } else if(n < -15){
+      t = "&nbsp;" + n + "&deg;";
+      color = "#582978"
+    } else if(n < -9){
+      t = "&nbsp;" + n + "&deg;";
+      color = "#292b73"
+    } else if(n < -7){
+      t = "&nbsp;" + n + "&deg;";
+      color = "#28459c"
+    } else if(n < -5){
+      t = "&nbsp;" + n + "&deg;";
+      color = "#3852a1"
+    } else if(n < -3){
+      t = "&nbsp;" + n + "&deg;";
+      color = "#4275b8"
+    } else if(n < -1){
+      t = "&nbsp;" + n + "&deg;";
+      color = "#42b8eb"
+    } else if(n < 0){
+      t = "&nbsp;" + n + "&deg;";
+      color = "#6ecbdb"
     }else{
       t = "&nbsp;" + n.toString() + "&deg;";
+      color = "lightblue"
     }
 
-    return "<div style='display:inline-block; width:2em'>" + t + "</div>"
+    return "<div style='display:inline-block; width:2em; color:" + color + "'>" + t + "</div>"
 
   }
 
