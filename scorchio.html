@@ -82,7 +82,7 @@
       progress.hide()
       // Now add it to the list
       var dd = $("<dd/>")
-  		dd.html("<span style='font-size:1.5em; line-height:10px;'>" + t + "</span>&nbsp;" + getTemp(item.t+6) + "&nbsp;&nbsp;&nbsp;" + getWindDirection(item.wd) + "&nbsp;&nbsp;&nbsp;" + "" + getPrecipitation(item))
+  		dd.html("<span style='font-size:1.5em; line-height:10px;'>" + t + "</span>&nbsp;" + getTemp(item.t) + "&nbsp;&nbsp;&nbsp;" + getWindDirection(item.wd) + "&nbsp;&nbsp;&nbsp;" + "" + getPrecipitation(item))
 		  $("dl").append(dd)
   		prevDate = d
 	});
