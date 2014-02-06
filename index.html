@@ -8,6 +8,9 @@
 
 <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js" type="text/javascript"></script>
 
+<style>
+	dd {margin:0;padding:0;}
+</style>
 
 </head>
 <body style="background-color:black; color:lime">
@@ -82,7 +85,7 @@
       progress.hide()
       // Now add it to the list
       var dd = $("<dd/>")
-  		dd.html("<span>" + t + "</span>&nbsp;" + getTemp(item.t) + "&nbsp;&nbsp;&nbsp;" + getWindDirection(item.wd) + "&nbsp;&nbsp;&nbsp;" + "&#9729;" + getPrecipitation(item))
+  		dd.html("<span>" + t + "</span>&nbsp;" + getTemp(item.t) + "&nbsp;&nbsp;" + getWindDirection(item.wd) + "&nbsp;&nbsp;" + "&#9729;&nbsp;&nbsp;" + getPrecipitation(item))
 		  $("dl").append(dd)
   		prevDate = d
 	});
