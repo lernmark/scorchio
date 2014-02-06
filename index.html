@@ -85,37 +85,36 @@
       progress.hide()
       // Now add it to the list
       var dd = $("<dd/>")
-  		dd.html("<span>" + t + "</span>&nbsp;" + getTemp(item.t) + "&nbsp;&nbsp;" + getWindDirection(item.wd) + "&nbsp;&nbsp;" + getCloud(item.tcc-5) + "&nbsp;&nbsp;" + getPrecipitation(item))
+  		dd.html("<span>" + t + "</span>&nbsp;" + getTemp(item.t) + "&nbsp;&nbsp;" + getWindDirection(item.wd) + "&nbsp;&nbsp;" + getCloud(item.tcc) + "&nbsp;&nbsp;" + getPrecipitation(item))
 		  $("dl").append(dd)
   		prevDate = d
 	});
   });
 
   function getCloud(n) {
-  	console.log(n)
   	var c = ""
   	if (n === 0) {
-  		c = "black"
+  		c = "#000"
   	} else if (n === 1) {
   		c = "#111"
-  	} else if (n === 1) {
+  	} else if (n === 2) {
   		c = "#333"
-  	} else if (n === 1) {
+  	} else if (n === 3) {
   		c = "#555"
-  	} else if (n === 1) {
+  	} else if (n === 4) {
   		c = "#777"
-  	} else if (n === 1) {
+  	} else if (n === 5) {
   		c = "#999"
-  	} else if (n === 1) {
+  	} else if (n === 6) {
   		c = "#BBB"
-  	} else if (n === 1) {
+  	} else if (n === 7) {
   		c = "#DDD"
-  	} else if (n === 1) {
+  	} else if (n === 8) {
   		c = "#FFF"
   	} else {
   		c = "blue"
   	}
-	return "<span title='" + n + "' style='color:#" + c + "'>&#9729;</span>";  	
+	return "<span title='" + n + "' style='color:" + c + "'>&#9729;</span>";  	
   }
 
   // Forces signing on a number, returned as a string
