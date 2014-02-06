@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+<meta charset="utf-8">
+<meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js" type="text/javascript"></script>
+
+
+</head>
+<body style="background-color:black; color:lime">
+<progress value="0" max="200" style="color:lime; background-color:black"></progress>
+
+<code>
+  <h1>Stockholm, Sweden</h1>
+  <dl></dl>
+</code>
+
+<script>
+  
+
+
+    
+  
+(function() {
+
+    var msecsPerUpdate = 1000/60; // # of milliseconds between updates, this gives 60fps
+    var progress =  $('progress');
+    var duration = 2;             // secs to animate for
+    var interval = progress.attr('max')/(duration*1000/msecsPerUpdate);
+
+    var animator = function(){
+            progress.val(progress.val() + interval);
+            if (progress.val() + interval < progress.attr('max')){
+               setTimeout(animator, msecsPerUpdate);
+            } else {
+                progress.val(progress.attr('max'));
+            }
+        }
+
+  Date.prototype.format = function(format) //author: meizz
+  {
+    var o = {
+      "M+" : this.getMonth()+1, //month
+      "d+" : this.getDate(),    //day
+      "h+" : this.getHours(),   //hour
+      "m+" : this.getMinutes(), //minute
+      "s+" : this.getSeconds(), //second
+      "q+" : Math.floor((this.getMonth()+3)/3),  //quarter
+      "S" : this.getMilliseconds() //millisecond
+    }
+  
+    if(/(y+)/.test(format)) format=format.replace(RegExp.$1,
+      (this.getFullYear()+"").substr(4 - RegExp.$1.length));
+    for(var k in o)if(new RegExp("("+ k +")").test(format))
+      format = format.replace(RegExp.$1,
+        RegExp.$1.length==1 ? o[k] :
+          ("00"+ o[k]).substr((""+ o[k]).length));
+    return format;
+  }
+  
+
+  var smhiAPI = "http://opendata-download-metfcst.smhi.se/api/category/pmp1g/version/1/geopoint/lat/59.310486/lon/18.050398/data.json";
+  animator();
+  $.getJSON( smhiAPI).done(function( data ) {
+
+  	var prevDate = null
+    var nu = new Date()
+    var idag = nu.format("d/M")
+
+	   $.each( data.timeseries, function( i, item ) {
+  		var d = new Date(item.validTime).format("d/M")
+  		var t = new Date(item.validTime).format("hh:mm")
+      if(d != prevDate) {
+        var dt = $("<dt/>")
+        dt.html("<h2>" + d + "</h2>")
+        $("dl").append(dt)
+      }
+      
+      progress.hide()
+      // Now add it to the list
+      var dd = $("<dd/>")
+  		dd.html("<span>&#8986;" + t + "</span>&nbsp;" + getTemp(item.t) + "&nbsp;&nbsp;&nbsp;" + getWindDirection(item.wd) + "&nbsp;&nbsp;&nbsp;" + "" + getPrecipitation(item))
+		  $("dl").append(dd)
+  		prevDate = d
+	});
+  });
+
+  // Forces signing on a number, returned as a string
+  function getTemp(n) {
+    n = Math.round(n);
+    var t = ""
+    var color = "lime"
+    if(n > 25){
+      t = "+" + n + "&deg;";
+      color = "#f05522"
+    } else if(n > 25){
+      t = "+" + n + "&deg;";
+      color = "#e3cc68"
+    } else if(n > 9){
+      t = "+" + n + "&deg;";
+      color = "#48b548"
+    } else if(n > 7){
+      t = "&nbsp;+" + n + "&deg;";
+      color = "#2da848"
+    } else if(n > 5){
+      t = "&nbsp;+" + n + "&deg;";
+      color = "#00a85f"
+    } else if(n > 3){
+      t = "&nbsp;+" + n + "&deg;";
+      color = "#52ba84"
+    } else if(n > 1){
+      t = "&nbsp;+" + n + "&deg;";
+      color = "#6ac4ac"
+    } else if(n > 0){
+      t = "&nbsp;+" + n + "&deg;";
+      color = "#42b8eb"
+    } else if (n === 0) {
+      t = "&nbsp;&plusmn;" + n + "&deg;";
+      color = "#6ecbdb"
+    } else if(n < -25){
+      t = "&nbsp;" + n + "&deg;";
+      color = "#ebebeb"
+    } else if(n < -20){
+      t = "&nbsp;" + n + "&deg;";
+      color = "#828282"
+    } else if(n < -15){
+      t = "&nbsp;" + n + "&deg;";
+      color = "#582978"
+    } else if(n < -9){
+      t = "&nbsp;" + n + "&deg;";
+      color = "#292b73"
+    } else if(n < -7){
+      t = "&nbsp;" + n + "&deg;";
+      color = "#28459c"
+    } else if(n < -5){
+      t = "&nbsp;" + n + "&deg;";
+      color = "#3852a1"
+    } else if(n < -3){
+      t = "&nbsp;" + n + "&deg;";
+      color = "#4275b8"
+    } else if(n < -1){
+      t = "&nbsp;" + n + "&deg;";
+      color = "#42b8eb"
+    } else if(n < 0){
+      t = "&nbsp;" + n + "&deg;";
+      color = "#6ecbdb"
+    }else{
+      t = "&nbsp;" + n.toString() + "&deg;";
+      color = "lightblue"
+    }
+
+    return "<div style='display:inline-block; width:2em; color:" + color + "'>" + t + "</div>"
+
+  }
+
+  function getPrecipitation(item) {
+
+  // Category of precipitation
+  // 0 no
+  // 1 snow
+  // 2 snow and rain
+  // 3 rain
+  // 4 drizzle
+  // 5 freezing rain
+  // 6 freezing drizzle
+
+    var cat = ""
+    if (item.pcat === 1){
+      cat="snö"
+    } else if (item.pcat === 2) {
+      cat="snöblandat"
+    } else if (item.pcat === 3) {
+      cat="regn"
+    } else if (item.pcat === 4) {
+      cat="dugg"
+    } else if (item.pcat === 5) {
+      cat="underkylt"
+    } else if (item.pcat === 6) {
+      cat="underkylt"
+    } else {
+      cat=""
+    }
+
+
+    var pit = ""
+    if (item.pit > 0) {
+      pit = item.pit
+    }
+    return "<strong>" + cat + "</strong>&nbsp;" + pit
+  }
+
+  function getWindDirection(n) {
+    var dir = ""
+    if (n>22 && n<68) {
+      dir = "NO"
+    } else if (n>67 && n<113) {
+      dir = "O&nbsp;"
+    } else if (n>112 && n<158) {
+      dir = "SO"
+    } else if (n>157 && n<203) {
+      dir = "S&nbsp;"
+    } else if (n>202 && n<248) {
+      dir = "SV"
+    } else if (n>247 && n<293) {
+      dir = "V&nbsp;"
+    } else {
+      dir = "N&nbsp;"
+    } 
+    return "<div title='" + n + "' style='color:red;height:1em;display:inline-block;font-size:1.5em; line-height:0.9em; margin-right:0.3em;transform:rotate(" + n + "deg);-webkit-transform:rotate(" + n + "deg)'>&darr;</div><span style='color:red'>" + dir + "</span>";
+  }
+
+})();  
+
+
+
+
+</script>
+
+
+</body>
+
+</html>
