@@ -72,7 +72,7 @@
 
 	   $.each( data.timeseries, function( i, item ) {
   		var d = new Date(item.validTime).format("d/M")
-  		var t = new Date(item.validTime).format("hh")
+  		var t = new Date(item.validTime).format("hh:mm")
       if(d != prevDate) {
         var dt = $("<dt/>")
         dt.html("<h2>" + d + "</h2>")
@@ -82,7 +82,7 @@
       progress.hide()
       // Now add it to the list
       var dd = $("<dd/>")
-  		dd.html("<span style='font-size:1.5em; line-height:10px;'>" + t + "</span>&nbsp;" + getTemp(item.t) + "&nbsp;&nbsp;&nbsp;" + getWindDirection(item.wd) + "&nbsp;&nbsp;&nbsp;" + "" + getPrecipitation(item))
+  		dd.html("<span>" + t + "</span>&nbsp;" + getTemp(item.t) + "&nbsp;&nbsp;&nbsp;" + getWindDirection(item.wd) + "&nbsp;&nbsp;&nbsp;" + "" + getPrecipitation(item))
 		  $("dl").append(dd)
   		prevDate = d
 	});
