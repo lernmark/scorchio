@@ -85,11 +85,37 @@
       progress.hide()
       // Now add it to the list
       var dd = $("<dd/>")
-  		dd.html("<span>" + t + "</span>&nbsp;" + getTemp(item.t) + "&nbsp;&nbsp;" + getWindDirection(item.wd) + "&nbsp;&nbsp;" + "&#9729;&nbsp;&nbsp;" + getPrecipitation(item))
+  		dd.html("<span>" + t + "</span>&nbsp;" + getTemp(item.t) + "&nbsp;&nbsp;" + getWindDirection(item.wd) + "&nbsp;&nbsp;" + getCloud(item.tcc) + "&nbsp;&nbsp;" + getPrecipitation(item))
 		  $("dl").append(dd)
   		prevDate = d
 	});
   });
+
+  function getCloud(n) {
+  	var c = ""
+  	if (n === 0) {
+  		c = ""
+  	} else if (n === 1) {
+  		
+  	} else if (n === 1) {
+  		
+  	} else if (n === 1) {
+  		
+  	} else if (n === 1) {
+  		
+  	} else if (n === 1) {
+  		
+  	} else if (n === 1) {
+  		
+  	} else if (n === 1) {
+  		
+  	} else if (n === 1) {
+  		
+  	} else {
+  		
+  	}
+	return "<div title='" + n + "' style='opacity:0.4;'>&#9729;</span>";  	
+  }
 
   // Forces signing on a number, returned as a string
   function getTemp(n) {
