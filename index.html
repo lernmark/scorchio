@@ -40,11 +40,12 @@
 <progress value="0" max="200" style="color:lime; background-color:black"></progress>
 
 <code style="">
-  <div style="height:40px;">
+  <div>
     <h1>
       <a id="reload" href="" target="_blank">&#8635;</a>
       <a id="location" href="" target="_blank"></a>
     </h1>
+    <div style="position:relative; left:50px; top:-20px; font-weight:normal; font-size:8px; color:magenta" id="update-time"></div>
   </div>  
   <dl></dl>
 </code>
@@ -300,6 +301,7 @@
           prevDate = d
         }
      });
+      $("#update-time").text("Updated: " + new Date().format("hh:mm:ss"))
       progress.hide()
       $("code").show()
     });
