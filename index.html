@@ -11,7 +11,7 @@
 
 <style>
   dd {margin:0;padding:0;}
-  dt {color:lime;}
+  dt {color:red;font-family:lato;font-weight: normal;}
   h1 a {
     font-size: 1.4em;
     text-decoration: none;
@@ -96,7 +96,7 @@
   	} else {
   		c = "blue"
   	}
-	return "<span title='" + n + "' style='color:" + c + "'>&#9729;</span>";  	
+	return "<span title='" + n + "' style='font-size:1.5em;color:" + c + "'>&#9729;</span>";  	
   }
 
   // Forces signing on a number, returned as a string
@@ -220,7 +220,7 @@
     } else {
       dir = "N&nbsp;"
     } 
-    return "<div title='" + n + "' style='color:red;height:1em;display:inline-block;font-size:1.5em; line-height:0.9em; margin-right:0.3em;transform:rotate(" + n + "deg);-webkit-transform:rotate(" + n + "deg)'>&darr;</div><span style='color:red'>" + dir + "</span>";
+    return "<div title='" + n + "' style='height:1em;display:inline-block;font-size:1.5em; line-height:0.9em; margin-right:0.3em;transform:rotate(" + n + "deg);-webkit-transform:rotate(" + n + "deg)'>&darr;</div><span>" + dir + "</span>";
   }
 
 
