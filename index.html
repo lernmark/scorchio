@@ -40,10 +40,12 @@
 <progress value="0" max="200" style="color:lime; background-color:black"></progress>
 
 <code style="">
-  <h1>
-    <a id="reload" href="" target="_blank">&#8635;</a>
-    <a id="location" href="" target="_blank"></a>
-  </h1>  
+  <div style="height:40px;">
+    <h1>
+      <a id="reload" href="" target="_blank">&#8635;</a>
+      <a id="location" href="" target="_blank"></a>
+    </h1>
+  </div>  
   <dl></dl>
 </code>
 
@@ -253,8 +255,8 @@
   }
 
   function showPosition(position) {
-    console.log(position.coords.latitude)
-    console.log(position.coords.longitude)
+    //console.log(position.coords.latitude)
+    //console.log(position.coords.longitude)
     // x.innerHTML="Latitude: " + position.coords.latitude + 
     // "<br>Longitude: " + position.coords.longitude;  
     // http://maps.google.com/?q=59.310486,18.050398
@@ -264,7 +266,7 @@
     var lon = Math.round(position.coords.longitude*1000000)/1000000
 
     $.getJSON("http://maps.googleapis.com/maps/api/geocode/json?latlng=" + lat + "," + lon + "&sensor=true").done(function( data ) {
-      console.log(data.results[0].address_components[2].short_name)
+      //console.log(data.results[0].address_components[2].short_name)
       var location = data.results[0].address_components[2].short_name
       $("#location").text(location)
       $("#location").attr("href","http://maps.google.com/?q=" + lat + "," + lon)
@@ -277,33 +279,37 @@
 
       var prevDate = null
       var nu = new Date()
-      var idag = nu.format("d/M")
+      nu = nu.setHours(nu.getHours()-1)
+      var idag = new Date().format("d/M")
 
       $.each( data.timeseries, function( i, item ) {
-        var d = new Date(item.validTime).format("d/M")
-        var t = new Date(item.validTime).format("hh:mm")
-        if(d != prevDate) {
-          var dt = $("<dt/>")
-          dt.html("<h2>" + d + "</h2>")
-          $("dl").append(dt)
+        // Ignore time that has passed
+        if (new Date(item.validTime) > nu) {
+          var d = new Date(item.validTime).format("d/M")
+          var t = new Date(item.validTime).format("hh:mm")
+          if(d != prevDate) {
+            var dt = $("<dt/>")
+            dt.html("<h2>" + d + "</h2>")
+            $("dl").append(dt)
+          }
+          
+          // Now add it to the list
+          var dd = $("<dd/>")
+          dd.html("<span>" + t + "</span>&nbsp;" + getTemp(item.t) + "&nbsp;&nbsp;" + getWindDirection(item.wd) + "&nbsp;&nbsp;" + getCloud(item.tcc) + "&nbsp;&nbsp;" + getPrecipitation(item))
+          $("dl").append(dd)
+          prevDate = d
         }
-        
-        // Now add it to the list
-        var dd = $("<dd/>")
-        dd.html("<span>" + t + "</span>&nbsp;" + getTemp(item.t) + "&nbsp;&nbsp;" + getWindDirection(item.wd) + "&nbsp;&nbsp;" + getCloud(item.tcc) + "&nbsp;&nbsp;" + getPrecipitation(item))
-        $("dl").append(dd)
-        prevDate = d
-        progress.hide()
-        $("code").show()
      });
+      progress.hide()
+      $("code").show()
     });
   }
 
 
 $("#reload").on("click", function() {
-  $("#location").slideUp()
+  $("#reload").slideUp()
   getLocation();
-  $("#location").slideDown()
+  $("#reload").slideDown()
 
   return false;
 })
@@ -317,35 +323,35 @@ $("#reload").on("click", function() {
 //   console.log("C:" + $("code").position().top)
 // });
 
-var w = $(window)
-var scrollCnt = 0
-w.on("mousewheel",function(){
+// var w = $(window)
+// var scrollCnt = 0
+// w.on("mousewheel",function(){
 
-  if (w.scrollTop() < 1) {
-    scrollCnt++
-  } else {
-    scrollCnt = 0
-  }
+//   if (w.scrollTop() < 1) {
+//     scrollCnt++
+//   } else {
+//     scrollCnt = 0
+//   }
 
-  console.log(scrollCnt + "W:" + w.scrollTop())
+//   console.log(scrollCnt + "W:" + w.scrollTop())
   
-  if (scrollCnt > 20) {
-    scrollCnt = 0
-    $("#refresh").css("background-color","lime")    
-    getLocation()
-    $("#refresh").slideUp()
+//   if (scrollCnt > 20) {
+//     scrollCnt = 0
+//     $("#refresh").css("background-color","lime")    
+//     getLocation()
+//     $("#refresh").slideUp()
     
-  } else if (scrollCnt > 10) {
-    $("#refresh").slideDown()
-    $("#refresh").css("background-color","green")
-    setInterval(function(){
-      $("#refresh").hide()
-      scrollCnt = 0
-    },3000);
+//   } else if (scrollCnt > 10) {
+//     $("#refresh").slideDown()
+//     $("#refresh").css("background-color","green")
+//     setInterval(function(){
+//       $("#refresh").hide()
+//       scrollCnt = 0
+//     },3000);
 
-  }
+//   }
 
-});
+// });
 
 getLocation()
 
