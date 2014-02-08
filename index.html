@@ -10,6 +10,10 @@
 
 <style>
 	dd {margin:0;padding:0;}
+  a {
+    text-decoration: none;
+    color:lime;
+  }
 </style>
 
 </head>
@@ -17,7 +21,7 @@
 <progress value="0" max="200" style="color:lime; background-color:black"></progress>
 
 <code>
-  <h1>Stockholm, Sweden</h1>
+  <h1><a href="" target="_blank"></a></h1>
   <dl></dl>
 </code>
 
@@ -43,8 +47,7 @@
             }
         }
 
-  Date.prototype.format = function(format) //author: meizz
-  {
+  Date.prototype.format = function(format) {
     var o = {
       "M+" : this.getMonth()+1, //month
       "d+" : this.getDate(),    //day
@@ -64,32 +67,6 @@
     return format;
   }
   
-
-  var smhiAPI = "http://opendata-download-metfcst.smhi.se/api/category/pmp1g/version/1/geopoint/lat/59.310486/lon/18.050398/data.json";
-  animator();
-  $.getJSON( smhiAPI).done(function( data ) {
-
-  	var prevDate = null
-    var nu = new Date()
-    var idag = nu.format("d/M")
-
-	   $.each( data.timeseries, function( i, item ) {
-  		var d = new Date(item.validTime).format("d/M")
-  		var t = new Date(item.validTime).format("hh:mm")
-      if(d != prevDate) {
-        var dt = $("<dt/>")
-        dt.html("<h2>" + d + "</h2>")
-        $("dl").append(dt)
-      }
-      
-      progress.hide()
-      // Now add it to the list
-      var dd = $("<dd/>")
-  		dd.html("<span>" + t + "</span>&nbsp;" + getTemp(item.t) + "&nbsp;&nbsp;" + getWindDirection(item.wd) + "&nbsp;&nbsp;" + getCloud(item.tcc) + "&nbsp;&nbsp;" + getPrecipitation(item))
-		  $("dl").append(dd)
-  		prevDate = d
-	});
-  });
 
   function getCloud(n) {
   	var c = ""
@@ -240,6 +217,65 @@
     } 
     return "<div title='" + n + "' style='color:red;height:1em;display:inline-block;font-size:1.5em; line-height:0.9em; margin-right:0.3em;transform:rotate(" + n + "deg);-webkit-transform:rotate(" + n + "deg)'>&darr;</div><span style='color:red'>" + dir + "</span>";
   }
+
+
+
+  function getLocation() {
+    if (navigator.geolocation) {
+      return navigator.geolocation.getCurrentPosition(showPosition) 
+      //navigator.geolocation.getCurrentPosition(showPosition);
+    } else{
+      console.log("Nada")
+      //x.innerHTML="Geolocation is not supported by this browser.";
+    }
+  }
+
+  function showPosition(position) {
+    console.log(position.coords.latitude)
+    console.log(position.coords.longitude)
+    // x.innerHTML="Latitude: " + position.coords.latitude + 
+    // "<br>Longitude: " + position.coords.longitude;  
+    // http://maps.google.com/?q=59.310486,18.050398
+    // http://maps.googleapis.com/maps/api/geocode/json?latlng=59.310486,18.050398&sensor=true_or_false
+    // var smhiAPI = "http://opendata-download-metfcst.smhi.se/api/category/pmp1g/version/1/geopoint/lat/59.310486/lon/18.050398/data.json";
+    var lat = Math.round(position.coords.latitude*1000000)/1000000
+    var lon = Math.round(position.coords.longitude*1000000)/1000000
+
+    $.getJSON("http://maps.googleapis.com/maps/api/geocode/json?latlng=" + lat + "," + lon + "&sensor=true").done(function( data ) {
+      console.log(data.results[0].formatted_address)
+      $("h1 a").text(data.results[0].formatted_address)
+      $("h1 a").attr("href","http://maps.google.com/?q=" + lat + "," + lon)
+    });
+
+
+    var smhiAPI = "http://opendata-download-metfcst.smhi.se/api/category/pmp1g/version/1/geopoint/lat/" + lat + "/lon/" + lon + "/data.json";
+    animator();
+    $.getJSON( smhiAPI).done(function( data ) {
+
+      var prevDate = null
+      var nu = new Date()
+      var idag = nu.format("d/M")
+
+      $.each( data.timeseries, function( i, item ) {
+        var d = new Date(item.validTime).format("d/M")
+        var t = new Date(item.validTime).format("hh:mm")
+        if(d != prevDate) {
+          var dt = $("<dt/>")
+          dt.html("<h2>" + d + "</h2>")
+          $("dl").append(dt)
+        }
+        
+        progress.hide()
+        // Now add it to the list
+        var dd = $("<dd/>")
+        dd.html("<span>" + t + "</span>&nbsp;" + getTemp(item.t) + "&nbsp;&nbsp;" + getWindDirection(item.wd) + "&nbsp;&nbsp;" + getCloud(item.tcc) + "&nbsp;&nbsp;" + getPrecipitation(item))
+        $("dl").append(dd)
+        prevDate = d
+     });
+    });
+  }
+
+getLocation()
 
 })();  
 
