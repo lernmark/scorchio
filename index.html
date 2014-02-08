@@ -5,47 +5,48 @@
 <meta charset="utf-8">
 <meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-<link href='http://fonts.googleapis.com/css?family=Lato:100' rel='stylesheet' type='text/css'>
+<!-- <link href='http://fonts.googleapis.com/css?family=Lato:100' rel='stylesheet' type='text/css'> -->
 
 <style>
   dd {margin:0;padding:0;}
-  dt {color:red;font-family:lato;font-weight: normal;}
+  dt {color:red;font-weight: normal;}
   #location {
     font-size: 1.4em;
     text-decoration: none;
     color:lime;
     font-weight: normal;
-    font-family: lato;
   }
   #reload {
     font-size: 1.2em;
     text-decoration: none;
     color:lime;
     font-weight: normal;
-    font-family: lato;
   }
 
   code {
     display:none;
     margin-left:1em;
-    display:block;
+  }
+
+  h1 {
+    margin:0px;
   }
 </style>
 
 </head>
-<body style="background-color:black; color:lime; margin:0px">
+<body style="background-color:black; color:lime;">
 
-<div id="refresh" style="height:50px; width:100%; background-color:lime; display:none; color:black">&#8635; RELOAD</div>
+<!-- <div id="refresh" style="height:50px; width:100%; background-color:lime; display:none; color:black">&#8635; RELOAD</div> -->
 
 <progress value="0" max="200" style="color:lime; background-color:black"></progress>
 
 <code style="">
   <div>
     <h1>
-      <a id="reload" href="" target="_blank">&#8635;</a>
+      <a id="reload" href="" target="_blank"><span id="r1">&#8635;</span><span id="r2" style="display:none">&#8634;</span></a>
       <a id="location" href="" target="_blank"></a>
     </h1>
-    <div style="position:relative; left:50px; top:-20px; font-weight:normal; font-size:8px; color:magenta" id="update-time"></div>
+    <div style="position:relative; left:35px; top:0px; font-weight:normal; font-size:10px; color:magenta; width:150px" id="update-time"></div>
   </div>  
   <dl></dl>
 </code>
@@ -309,9 +310,9 @@
 
 
 $("#reload").on("click", function() {
-  $("#reload").slideUp()
   getLocation();
-  $("#reload").slideDown()
+  $("#r1").toggle()
+  $("#r2").toggle()
 
   return false;
 })
