@@ -19,6 +19,8 @@
     font-weight: normal;
     font-family: lato;
   }
+  #reload {
+  }
 </style>
 
 </head>
@@ -26,7 +28,10 @@
 <progress value="0" max="200" style="color:lime; background-color:black"></progress>
 
 <code>
-  <h1><a href="" target="_blank"></a></h1>
+  <h1>
+    <a id="reload" href="" target="_blank">&#8635;</a>
+    <a id="location" href="" target="_blank">&#8635;</a>
+  </h1>  
   <dl></dl>
 </code>
 
@@ -249,8 +254,8 @@
     $.getJSON("http://maps.googleapis.com/maps/api/geocode/json?latlng=" + lat + "," + lon + "&sensor=true").done(function( data ) {
       console.log(data.results[0].address_components[2].short_name)
       var location = data.results[0].address_components[2].short_name
-      $("h1 a").text(location)
-      $("h1 a").attr("href","http://maps.google.com/?q=" + lat + "," + lon)
+      $("#location").text(location)
+      $("#location").attr("href","http://maps.google.com/?q=" + lat + "," + lon)
     });
 
 
@@ -281,6 +286,11 @@
     });
   }
 
+
+$("#reload").on("click", function() {
+  getLocation();
+  return false;
+})
 getLocation()
 
 })();  
