@@ -25,7 +25,6 @@
 
   code {
     display:none;
-    margin-left:1em;
   }
 
   h1 {
@@ -39,15 +38,17 @@
 <!-- <div id="refresh" style="height:50px; width:100%; background-color:lime; display:none; color:black">&#8635; RELOAD</div> -->
 
 <progress value="0" max="200" style="color:lime; background-color:black"></progress>
+  <div>
+    <h2 style="margin:0">
+      <a id="reload" href="" target="_blank"><span id="r1">&#8635;</span><span id="r2" style="display:none">&#8634;</span></a>
+    </h2>
+    <h1>
+      <code><a id="location" href="" target="_blank"></a></code>
+    </h1>
+    <code style="font-weight:normal; font-size:10px; color:magenta; width:150px" id="update-time"></code>
+  </div>  
 
 <code style="">
-  <div>
-    <h1>
-      <a id="reload" href="" target="_blank"><span id="r1">&#8635;</span><span id="r2" style="display:none">&#8634;</span></a>
-      <a id="location" href="" target="_blank"></a>
-    </h1>
-    <div style="position:relative; left:35px; top:0px; font-weight:normal; font-size:10px; color:magenta; width:150px" id="update-time"></div>
-  </div>  
   <dl></dl>
 </code>
 
@@ -241,7 +242,7 @@
     } else {
       dir = "N&nbsp;"
     } 
-    return "<div title='" + n + "' style='height:1em;display:inline-block;font-size:1.5em; line-height:0.9em; margin-right:0.3em;transform:rotate(" + n + "deg);-webkit-transform:rotate(" + n + "deg)'>&darr;</div><span>" + dir + "</span>";
+    return "<div class='wind-dir' title='" + n + "' style='height:1em;display:inline-block;font-size:1.5em; line-height:0.9em; margin-right:0.3em;transform:rotate(" + n + "deg);-webkit-transform:rotate(" + n + "deg)'>&darr;</div><span>" + dir + "</span>";
   }
 
 
@@ -254,6 +255,21 @@
       console.log("Nada")
       //x.innerHTML="Geolocation is not supported by this browser.";
     }
+  }
+
+  function getRotationDegrees(obj) {
+      var matrix = obj.css("-webkit-transform") ||
+      obj.css("-moz-transform")    ||
+      obj.css("-ms-transform")     ||
+      obj.css("-o-transform")      ||
+      obj.css("transform");
+      if(matrix !== 'none') {
+          var values = matrix.split('(')[1].split(')')[0].split(',');
+          var a = values[0];
+          var b = values[1];
+          var angle = Math.round(Math.atan2(b, a) * (180/Math.PI));
+      } else { var angle = 0; }
+      return (angle < 0) ? angle +=360 : angle;
   }
 
   function showPosition(position) {
@@ -277,12 +293,16 @@
 
     var smhiAPI = "http://opendata-download-metfcst.smhi.se/api/category/pmp1g/version/1/geopoint/lat/" + lat + "/lon/" + lon + "/data.json";
     animator();
+    $("code dl").html("")
+
     $.getJSON( smhiAPI).done(function( data ) {
 
       var prevDate = null
       var nu = new Date()
       nu = nu.setHours(nu.getHours()-1)
       var idag = new Date().format("d/M")
+      $("code").show()
+      progress.hide()
 
       $.each( data.timeseries, function( i, item ) {
         // Ignore time that has passed
@@ -297,22 +317,36 @@
           
           // Now add it to the list
           var dd = $("<dd/>")
-          dd.html("<span>" + t + "</span>&nbsp;" + getTemp(item.t) + "&nbsp;&nbsp;" + getWindDirection(item.wd) + "&nbsp;&nbsp;" + getCloud(item.tcc) + "&nbsp;&nbsp;" + getPrecipitation(item))
+          dd.html("<span>" + t + "</span>&nbsp;" + getTemp(item.t) + "&nbsp;&nbsp;" + getWindDirection(item.wd) + "&nbsp;" + getCloud(item.tcc) + "&nbsp;&nbsp;" + getPrecipitation(item))
           $("dl").append(dd)
           prevDate = d
         }
-     });
+      });
+      
+    }).always(function() {
       $("#update-time").text("Updated: " + new Date().format("hh:mm:ss"))
-      progress.hide()
-      $("code").show()
+      $("#r1").toggle()
+      $("#r2").toggle()
+
+      // $(".wind-dir").each(function(){
+      //     console.log($(this))
+      //     // var degree = getRotationDegrees($(this)) - 30 
+      //     var degree = 30 
+      //     $(this).animate({
+      //                 '-webkit-transform': 'rotate(' + degree + 'deg)',
+      //                 '-moz-transform': 'rotate(' + degree + 'deg)',
+      //                 '-ms-transform': 'rotate(' + degree + 'deg)',
+      //                 '-o-transform': 'rotate(' + degree + 'deg)',
+      //                 'transform': 'rotate(' + degree + 'deg)',
+      //                 'zoom': 1
+      //     }, 1000);
+      // });
     });
   }
 
 
 $("#reload").on("click", function() {
   getLocation();
-  $("#r1").toggle()
-  $("#r2").toggle()
 
   return false;
 })
