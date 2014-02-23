@@ -39,13 +39,15 @@
 
 <progress value="0" max="200" style="color:lime; background-color:black"></progress>
   <div>
-    <h2 style="margin:0">
-      <a id="reload" href="" target="_blank"><span id="r1">&#8635;</span><span id="r2" style="display:none">&#8634;</span></a>
-    </h2>
     <h1>
       <code><a id="location" href="" target="_blank"></a></code>
     </h1>
-    <code style="font-weight:normal; font-size:10px; color:magenta; width:150px" id="update-time"></code>
+    <h2 style="margin:0">
+      <a id="reload" href="" target="_blank"><span id="r1">&#8635;</span><span id="r2" style="display:none">&#8634;</span></a>
+      <code style="font-weight:normal; color:magenta; width:150px" id="update-time"></code>
+    </h2>
+
+    
   </div>  
 
 <code style="">
@@ -324,7 +326,7 @@
       });
       
     }).always(function() {
-      $("#update-time").text("Updated: " + new Date().format("hh:mm:ss"))
+      $("#update-time").text(new Date().format("hh:mm:ss"))
       $("#r1").toggle()
       $("#r2").toggle()
 
