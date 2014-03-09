@@ -42,6 +42,7 @@
     <h1>
       <code><a id="location" href="" target="_blank"></a></code>
     </h1>
+    <code id="locationDetailed"></code>
     <h2 style="margin:0">
       <a id="reload" href="" target="_blank"><span id="r1">&#8635;</span><span id="r2" style="display:none">&#8634;</span></a>
       <code style="font-weight:normal; color:magenta; width:150px" id="update-time"></code>
@@ -275,6 +276,7 @@
   }
 
   function showPosition(position) {
+
     //console.log(position.coords.latitude)
     //console.log(position.coords.longitude)
     // x.innerHTML="Latitude: " + position.coords.latitude + 
@@ -288,7 +290,9 @@
     $.getJSON("http://maps.googleapis.com/maps/api/geocode/json?latlng=" + lat + "," + lon + "&sensor=true").done(function( data ) {
       //console.log(data.results[0].address_components[2].short_name)
       var location = data.results[0].address_components[2].short_name
-      $("#location").text(location)
+      var locationDetailed = data.results[0].address_components[1].short_name + " " + data.results[0].address_components[0].short_name
+      $("#location").html(location)
+      $("#locationDetailed").html(locationDetailed)
       $("#location").attr("href","http://maps.google.com/?q=" + lat + "," + lon)
     });
 
@@ -296,8 +300,45 @@
     var smhiAPI = "http://opendata-download-metfcst.smhi.se/api/category/pmp1g/version/1/geopoint/lat/" + lat + "/lon/" + lon + "/data.json";
     animator();
     $("code dl").html("")
+    console.log(localStorage.getItem('smhiData'))
 
-    $.getJSON( smhiAPI).done(function( data ) {
+    if (localStorage.getItem('smhiData') === null) {
+      $.getJSON( smhiAPI).done(function( data ) {
+        processSmhiData(data)
+        
+      }).always(function() {
+        doneProcessSmhiData()
+      });      
+    } else {
+      var localData = JSON.parse(localStorage.getItem('smhiData'));
+      processSmhiData(localData);
+      doneProcessSmhiData();
+    }
+
+    function doneProcessSmhiData() {
+      $("#update-time").text(new Date().format("hh:mm:ss"))
+      $("#r1").toggle()
+      $("#r2").toggle()
+
+      // $(".wind-dir").each(function(){
+      //     console.log($(this))
+      //     // var degree = getRotationDegrees($(this)) - 30 
+      //     var degree = 30 
+      //     $(this).animate({
+      //                 '-webkit-transform': 'rotate(' + degree + 'deg)',
+      //                 '-moz-transform': 'rotate(' + degree + 'deg)',
+      //                 '-ms-transform': 'rotate(' + degree + 'deg)',
+      //                 '-o-transform': 'rotate(' + degree + 'deg)',
+      //                 'transform': 'rotate(' + degree + 'deg)',
+      //                 'zoom': 1
+      //     }, 1000);
+      // });
+
+    }
+
+    function processSmhiData(data) {
+      var dataToStore = JSON.stringify(data);
+      //localStorage.setItem('smhiData', dataToStore);
 
       var prevDate = null
       var nu = new Date()
@@ -323,27 +364,9 @@
           $("dl").append(dd)
           prevDate = d
         }
-      });
-      
-    }).always(function() {
-      $("#update-time").text(new Date().format("hh:mm:ss"))
-      $("#r1").toggle()
-      $("#r2").toggle()
+      });      
+    }
 
-      // $(".wind-dir").each(function(){
-      //     console.log($(this))
-      //     // var degree = getRotationDegrees($(this)) - 30 
-      //     var degree = 30 
-      //     $(this).animate({
-      //                 '-webkit-transform': 'rotate(' + degree + 'deg)',
-      //                 '-moz-transform': 'rotate(' + degree + 'deg)',
-      //                 '-ms-transform': 'rotate(' + degree + 'deg)',
-      //                 '-o-transform': 'rotate(' + degree + 'deg)',
-      //                 'transform': 'rotate(' + degree + 'deg)',
-      //                 'zoom': 1
-      //     }, 1000);
-      // });
-    });
   }
 
 

@@ -1,0 +1,58 @@
+<html ng-app="phonecatApp">
+<head>
+  <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.2.14/angular.min.js"></script>
+  <script type="text/javascript">
+  'use strict';
+
+  /* Controllers */
+
+  var phonecatApp = angular.module('phonecatApp', []);
+
+  // phonecatApp.controller('PhoneListCtrl', function($scope) {
+  //   $scope.phones = [
+  //     {'name': 'Nexus S',
+  //      'snippet': 'Fast just got faster with Nexus S.'},
+  //     {'name': 'Motorola XOOM™ with Wi-Fi',
+  //      'snippet': 'The Next, Next Generation tablet.'},
+  //     {'name': 'MOTOROLA XOOM™',
+  //      'snippet': 'The Next, Next Generation tablet.'}
+  //   ];
+  // });
+
+
+  var smhiAPI = "http://opendata-download-metfcst.smhi.se/api/category/pmp1g/version/1/geopoint/lat/59.310486/lon/18.050398/data.json";
+  
+
+  var phonecatApp = angular.module('phonecatApp', []);
+   
+  phonecatApp.controller('PhoneListCtrl', function ($scope, $http) {
+    $http.get(smhiAPI).success(function(data) {
+      $scope.phones = data.timeseries;
+    });
+   
+    //$scope.orderProp = 'age';
+  });
+
+
+  var phonecatServices = angular.module('phonecatServices', ['ngResource']);
+   
+  phonecatServices.factory('Phone', ['$resource',
+    function($resource){
+      return $resource('phones/:phoneId.json', {}, {
+        query: {method:'GET', params:{phoneId:'phones'}, isArray:true}
+    });
+  }]);
+
+  </script>
+</head>
+<body ng-controller="PhoneListCtrl">
+ 
+  <ul>
+    <li ng-repeat="phone in phones">
+      {{phone.validTime}}
+      <p>{{phone.wd}}</p>
+    </li>
+  </ul>
+ 
+</body>
+</html>
