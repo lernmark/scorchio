@@ -223,9 +223,10 @@
 
     var pit = ""
     if (item.pit > 0) {
-      pit = item.pit
+      return item.pit + "&nbsp;<em>" + cat + "</em>&nbsp;"
+    } else {
+      return "";
     }
-    return pit + "&nbsp;<em>" + cat + "</em>&nbsp;"
   }
 
   function getWindDirection(n) {
