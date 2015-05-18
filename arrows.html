@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Arrows</title>
+        <style type="text/css">
+            nav div {
+                display:inline-block;
+                border: dashed 1px silver;
+                padding:0.5em;
+                opacity:0.8;
+            }
+            nav div:hover {
+                border:solid 1px silver;
+                opacity:1;
+            }
+            
+#crumbs {
+	text-align: center;
+}
+
+	#crumbs ul {
+		list-style: none;
+		display: inline-table;
+	}
+		#crumbs ul li {
+			display: inline;
+		}
+	
+		#crumbs ul li a {
+			display: block;
+			float: left;
+			height: 50px;
+			background: #3498db;
+			text-align: center;
+			padding: 30px 40px 0 80px;
+			position: relative;
+			margin: 0 10px 0 0; 
+			font-size: 20px;
+			text-decoration: none;
+			color: #fff;
+		}
+			#crumbs ul li a:after {
+				content: "";  
+				border-top: 40px solid transparent;
+	 			border-bottom: 40px solid transparent;
+	  			border-left: 40px solid #3498db;
+				position: absolute; right: -30px; top: 0;
+				z-index: 1;
+				transform: rotate3d(0, 1, 0, 60deg);
+			}
+			
+			#crumbs ul li a:before {
+				content: "";  
+				border-top: 40px solid transparent;
+	  			border-bottom: 40px solid transparent;
+	  			border-left: 40px solid #d4f2ff;
+				position: absolute; left: 0; top: 0;
+
+			}
+	
+				#crumbs ul li:first-child a {
+					border-top-left-radius: 10px; border-bottom-left-radius: 10px;
+				}
+				#crumbs ul li:first-child a:before {
+					display: none; 
+				}
+				
+				#crumbs ul li:last-child a {
+					padding-right: 80px;
+					border-top-right-radius: 10px; border-bottom-right-radius: 10px;
+				}
+				#crumbs ul li:last-child a:after {
+					display: none; 
+				}
+			
+			#crumbs ul li a:hover {
+				background: #fa5ba5;
+			}
+				#crumbs ul li a:hover:after {
+					border-left-color: #fa5ba5;
+				}
+		
+		            
+        </style>
+    </head>
+    <body>
+        
+        
+    <main>
+<nav>
+    <div><a href="#">HTML</a>asdasd</div>
+    <div>asdasd</div>
+    <div>asdasd</div>
+    <div><a href="#">HTML</a>asdasd</div>
+    <div>asdasd</div>
+    <div>asdasd</div>
+    <div><a href="#">HTML</a>asdasd</div>
+    <div>asdasd</div>
+    <div>asdasd</div>
+</nav>        
+      <h1>Web Browsers</h1>
+      <p>Google Chrome, Firefox, and Internet Explorer are the most used browsers today.</p>
+    
+      <article>
+        <h1>Google Chrome</h1>
+        <p>Google Chrome is a free, open-source web browser developed by Google,
+        released in 2008. Lorem ipsum dolor sit amet, consectetur adipisicing elit. Suscipit, laborum, sunt aliquam at quos corrupti veritatis officia perspiciatis praesentium quas molestiae nemo esse tempore ullam voluptas dolores fugit eaque commodi! </p>
+        <svg height="70" width="15">
+            <polyline points="0,0 15,35 0,70" style="fill:none;stroke:black;stroke-width:1"></polyline>
+        </svg>    
+      </article>
+    
+      <article>
+        <h1>Internet Explorer</h1>
+        <p>Internet Explorer is a free web browser from Microsoft, released in 1995.</p>
+        <P>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Minima, illum, nobis, quas, exercitationem praesentium voluptas animi blanditiis earum eos labore repudiandae magni veritatis nulla ratione repellat. Doloribus, vitae assumenda pariatur.</P>
+<div id="crumbs">
+	<ul>
+		<li><a href="#1">One</a></li>
+		<li><a href="#2">Two</a></li>
+		<li><a href="#3">Three</a></li>
+		<li><a href="#4">Four</a></li>
+	</ul>
+</div>        
+      </article>
+    
+      <article>
+        <h1>Mozilla Firefox</h1>
+        <p>Firefox is a free, open-source web browser from Mozilla, released in 2004.</p>
+      </article>
+    </main>
+    
+    </body>
+</html>

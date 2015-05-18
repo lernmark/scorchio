@@ -1,0 +1,30 @@
+<html ng-app="weatherApp">
+
+<head>
+  <script src="bower_components/angular/angular.min.js"></script>
+  <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
+  
+</head>
+
+<body>
+  <div ng-controller="weatherCtrl" ng-init="init()" class="container">
+    <h1>SMHI <small><em>Angular v1.3.10</em></small></h1>
+    <!--<svg height="40" width="40"><circle r="20" cx="20" cy="20" fill="gray" /></svg>-->
+    <div class="row">
+      <div class="col-md-12">
+        <table class="table table-condensed">
+          <tr  ng-repeat="x in timeseries" class="">
+            <td>{{ x.validTime }}</td>
+            <td wind-direction wd="{{x.wd}}">zxczxc</td>
+            <td precipitation pcat="{{x.pcat}}" pit="{{x.pit}}">ccccc</td>
+          </tr>
+        </table>
+        <button class="btn btn-warning">Update</button></div>
+    </div>
+  </div>
+  <script src="js/controllers.js"></script>
+  <script src="js/services.js"></script>
+
+</body>
+
+</html>
